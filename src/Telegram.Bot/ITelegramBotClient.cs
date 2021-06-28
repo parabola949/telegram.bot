@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Telegram.Bot.Args;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.BotCommandScopes;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.InputFiles;
@@ -898,6 +899,24 @@ namespace Telegram.Bot
             CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Use this method to ban a user from a group or a supergroup. In the case of supergroups, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the group for this to work.
+        /// </summary>
+        /// <param name="chatId"><see cref="ChatId"/> for the target group</param>
+        /// <param name="userId">Unique identifier of the target user</param>
+        /// <param name="untilDate"><see cref="DateTime"/> when the user will be unbanned. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever</param>
+        /// <param name="revokeMessages">Pass True to delete all messages from the chat for the user that is being removed. If False, the user will be able to see messages in the group that were sent before the user was removed. Always True for supergroups and channels.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns><c>true</c> on success.</returns>
+        /// <see href="https://core.telegram.org/bots/api#kickchatmember"/>
+        Task BanChatMemberAsync(
+            ChatId chatId,
+            long userId,
+            DateTime untilDate = default,
+            bool? revokeMessages = default,
+            CancellationToken cancellationToken = default
+            );
+
+        /// <summary>
         /// Use this method to kick a user from a group or a supergroup. In the case of supergroups, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the group for this to work.
         /// </summary>
         /// <param name="chatId"><see cref="ChatId"/> for the target group</param>
@@ -907,6 +926,7 @@ namespace Telegram.Bot
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns><c>true</c> on success.</returns>
         /// <see href="https://core.telegram.org/bots/api#kickchatmember"/>
+        [Obsolete("Renamed to BanChatMemberAsync")]
         Task KickChatMemberAsync(
             ChatId chatId,
             long userId,
@@ -1102,7 +1122,10 @@ namespace Telegram.Bot
         /// <param name="cancellationToken"></param>
         /// <returns>Array of <see cref="BotCommand"/> on success.</returns>
         /// <see href="https://core.telegram.org/bots/api#getmycommands"/>
-        Task<BotCommand[]> GetMyCommandsAsync(CancellationToken cancellationToken = default);
+        Task<BotCommand[]> GetMyCommandsAsync(
+            BotCommandScopeBase scope = null,
+            string languageCode = null,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Use this method to change the list of the bot's commands. Returns True on success.
@@ -1113,6 +1136,20 @@ namespace Telegram.Bot
         /// <see href="https://core.telegram.org/bots/api#setmycommands"/>
         Task SetMyCommandsAsync(
             IEnumerable<BotCommand> commands,
+            BotCommandScopeBase scope = null,
+            string languageCode = null,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Use this method to delete the list of the bot's commands. Returns True on success.
+        /// </summary>
+        
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns><c>true</c> on success.</returns>
+        /// <see href="https://core.telegram.org/bots/api#deletemycommands"/>
+        Task DeleteMyCommandsAsync(
+            BotCommandScopeBase scope = null,
+            string languageCode = null,
             CancellationToken cancellationToken = default);
 
         #endregion Available methods

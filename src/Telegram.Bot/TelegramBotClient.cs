@@ -1180,7 +1180,7 @@ namespace Telegram.Bot
             MakeRequestAsync(new GetMyCommandsRequest(), cancellationToken);
 
         /// <inheritdoc />
-        public Task<BotCommand[]> DeleteMyCommandsAsync(
+        public Task DeleteMyCommandsAsync(
             BotCommandScopeBase scope = null,
             string languageCode = null,
             CancellationToken cancellationToken = default) =>
