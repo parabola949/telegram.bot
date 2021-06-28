@@ -10,7 +10,7 @@ namespace Telegram.Bot.Requests
     /// Use this method to get the current list of the bot's commands. Requires no parameters. Returns array of <see cref="BotCommand"/> on success.
     /// </summary>
     [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
-    public class GetMyCommandsRequest : RequestBase<BotCommand[]>
+    public class DeleteMyCommandsRequest : RequestBase<BotCommand[]>
     {
         /// <summary>
         /// Optional.  Scope of the bot commands
@@ -27,8 +27,8 @@ namespace Telegram.Bot.Requests
         /// <summary>
         /// Initializes a new request
         /// </summary>
-        public GetMyCommandsRequest(BotCommandScopeBase scope = null, string languageCode = null)
-            : base("getMyCommands")
+        public DeleteMyCommandsRequest(BotCommandScopeBase scope = null, string languageCode = null)
+            : base("deleteMyCommands")
         {
             Scope = scope;
             LanguageCode = languageCode;
