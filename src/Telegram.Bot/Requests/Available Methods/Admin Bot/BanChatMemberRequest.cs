@@ -10,9 +10,8 @@ namespace Telegram.Bot.Requests
     /// <summary>
     /// Kick a user from a group, a supergroup or a channel
     /// </summary>
-    [Obsolete("Method has been renamed to BanChatMemberRequest")]
     [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
-    public class KickChatMemberRequest : RequestBase<bool>
+    public class BanChatMemberRequest : RequestBase<bool>
     {
         /// <summary>
         /// Unique identifier for the target group or username of the target supergroup or channel
@@ -44,8 +43,8 @@ namespace Telegram.Bot.Requests
         /// </summary>
         /// <param name="chatId">Unique identifier for the target group or username of the target supergroup or channel</param>
         /// <param name="userId">Unique identifier of the target user</param>
-        public KickChatMemberRequest(ChatId chatId, long userId)
-            : base("kickChatMember")
+        public BanChatMemberRequest(ChatId chatId, long userId)
+            : base("banChatMember")
         {
             ChatId = chatId;
             UserId = userId;

@@ -12,6 +12,7 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Requests;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.BotCommandScopes;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.InputFiles;
@@ -1016,6 +1017,7 @@ namespace Telegram.Bot
         }
 
         /// <inheritdoc />
+        [Obsolete("Please use BanChatMemberAsync")]
         public Task KickChatMemberAsync(
             ChatId chatId,
             long userId,
@@ -1024,6 +1026,20 @@ namespace Telegram.Bot
             CancellationToken cancellationToken = default
         ) =>
             MakeRequestAsync(new KickChatMemberRequest(chatId, userId)
+            {
+                UntilDate = untilDate,
+                RevokeMessages = revokeMessages
+            }, cancellationToken);
+
+        /// <inheritdoc />
+        public Task BanChatMemberAsync(
+            ChatId chatId,
+            long userId,
+            DateTime untilDate = default,
+            bool? revokeMessages = default,
+            CancellationToken cancellationToken = default
+        ) =>
+            MakeRequestAsync(new BanChatMemberRequest(chatId, userId)
             {
                 UntilDate = untilDate,
                 RevokeMessages = revokeMessages
@@ -1157,14 +1173,28 @@ namespace Telegram.Bot
             MakeRequestAsync(new SetChatPermissionsRequest(chatId, permissions), cancellationToken);
 
         /// <inheritdoc />
-        public Task<BotCommand[]> GetMyCommandsAsync(CancellationToken cancellationToken = default) =>
+        public Task<BotCommand[]> GetMyCommandsAsync(
+            BotCommandScopeBase scope = null,
+            string languageCode = null,
+            CancellationToken cancellationToken = default) =>
             MakeRequestAsync(new GetMyCommandsRequest(), cancellationToken);
+
+        /// <inheritdoc />
+        public Task<BotCommand[]> DeleteMyCommandsAsync(
+            BotCommandScopeBase scope = null,
+            string languageCode = null,
+            CancellationToken cancellationToken = default) =>
+            MakeRequestAsync(new DeleteMyCommandsRequest(), cancellationToken);
 
         /// <inheritdoc />
         public Task SetMyCommandsAsync(
             IEnumerable<BotCommand> commands,
+            BotCommandScopeBase scope = null,
+            string languageCode = null,
             CancellationToken cancellationToken = default) =>
-            MakeRequestAsync(new SetMyCommandsRequest(commands), cancellationToken);
+            MakeRequestAsync(new SetMyCommandsRequest(commands, scope, languageCode), cancellationToken);
+
+
 
         /// <inheritdoc />
         public Task<Message> StopMessageLiveLocationAsync(
